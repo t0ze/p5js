@@ -1,0 +1,176 @@
+let classifier;
+let label = "NONE";
+var x;
+var y;
+var z;
+var c;
+var Txo;
+var Tyo;
+var Txt;
+var Tyt;
+var Txth;
+var Tyth;
+
+function preload() {
+  classifier = ml5.soundClassifier(
+    "https://teachablemachine.withgoogle.com/models/XVTkP9wvl/" + "model.json"
+  );
+  x = 20;
+  r = 100;
+  g = 40;
+  b = 200;
+  s = 30;
+  j = 0;
+  y = 5;
+  m = 80;
+  p = 165;
+  l = 90;
+  n = 243;
+  Txo = 230;
+  Tyo = 175;
+  Txt = 258;
+  Tyt = 120;
+  Txth = 286;
+  Tyth = 175;
+
+ 
+}
+
+function setup() {
+  createCanvas(900, 825);
+  classifyAudio();
+  background(255);
+}
+
+function classifyAudio() {
+  classifier.classify(gotResults);
+}
+
+function draw() {
+  rectMode(CENTER);
+  let c = [r, g, b];
+  translate(450, 412.5);
+  stroke(0);
+  for (let i = 0; i < 10; i++) {
+    fill(c);
+    ellipse(j, s, x, m);
+    rotate(PI / 5);
+  }
+  fill(p, l, n, 50);
+  triangle(Txo, Tyo, Txt, Tyt, Txth, Tyth);
+
+  if (y == 5) {
+    if (label == "clap") {
+      x = x - 3;
+      if (x < 0) {
+        x = 0;
+      }
+    } else if (label == "glass") {
+      x = x + 3;
+
+      if (x > 500) {
+        x = 500;
+      }
+    } else if (label == "desk") {
+      r = random(0, 255);
+      g = random(0, 255);
+      b = random(0, 255);
+
+      p = random(0, 255);
+      l = random(0, 255);
+      n = random(0, 255);
+    } else if (label == "whislte") {
+      s = s + 3;
+
+      if (s > 100) {
+        s = 100;
+      }
+    } else if (label == "controller") {
+      j = j + 5;
+
+      if (j > 100) {
+        j = 100;
+      }
+    } else if (label == "bottle blowing") {
+      Txo = Txo + 6;
+
+      if (Txo > 80) {
+        Txo = 99;
+      }
+
+      Tyt = Tyt - 1;
+
+      if (Tyt < 10) {
+        Tyt = 10;
+      }
+    } else if (label == "keyboard") {
+      Txt = Txt + 4;
+
+      if (Txt > 400) {
+        Txt = 400;
+      }
+
+      Tyth = Tyth - 2;
+
+      if (Tyth < 100) {
+        Tyth = 100;
+      }
+    } else if (label == "paper") {
+      Txth = Txth + 5;
+
+      if (Txth > 160) {
+        Txth = 160;
+      }
+      Tyo = Tyo - 2;
+
+      if (Tyo < 20) {
+        Tyo = 20;
+      }
+    } else if (label == "wrapper") {
+      Tyth = Tyth + 5;
+
+      if (Tyth > 160) {
+        Tyth = 160;
+      }
+      Txo = Txo - 2;
+
+      if (Txo < 100) {
+        Txo = 100;
+      }
+      //north memphis the - pharmacist
+    } else if (label == "song") {
+      Tyt = Tyt + 4;
+
+      if (Tyt > 100) {
+        Tyt = 100;
+      }
+
+      Txth = Txth - 2;
+
+      if (Txth < 100) {
+        Txth = 100;
+      }
+    } else if (label == "trash can") {
+      Tyo = Tyo + 6;
+
+      if (Tyo > 80) {
+        Tyo = 99;
+      }
+
+      Txt = Txt - 1;
+
+      if (Txt < 100) {
+        Txt = 100;
+      }
+    }
+  }
+}
+
+function gotResults(error, results) {
+  if (error) {
+    console.error(error);
+    return;
+  }
+  label = results[0].label;
+  console.log(results[0].label);
+}
